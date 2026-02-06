@@ -23,9 +23,9 @@ def test_coreLocators(page:Page):
         page.goto("https://rahulshettyacademy.com/loginpagePractise/")
         print("Navigating to Rahul shetty academy...")
         print("Filling Username...")
-        page.get_by_label("username").fill("Hitesh")
+        page.get_by_label("username").fill("rahulshettyacademy")
         print("Filling Password...")
-        page.get_by_label("password").fill("Learning")
+        page.get_by_label("password").fill("Learning@830$3mK2")
         page.get_by_role("combobox").select_option("consult") # combobox is for select class and option is the value from HTML
         page.locator("#terms").check() #--> To just check the checkbox
         page.get_by_role("button",name="Sign In").click()
