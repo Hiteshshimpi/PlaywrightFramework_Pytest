@@ -16,3 +16,11 @@ def  test_AlertBoxes(page:Page):
     page.on("dialog", lambda dialog: dialog.accept())
     page.get_by_role("button",name="Confirm").click()
     page.wait_for_timeout(4000)
+
+
+def test_frameHandling(page:Page):
+    page.goto("https://rahulshettyacademy.com/AutomationPractice/")
+    pageFrame = page.frame_locator("#courses-iframe")
+    pageFrame.get_by_role("link",name="All Access plan").click()
+    page.wait_for_timeout(4000)
+    expect(pageFrame.locator("body")).to_contain_text("Happy Subscibers!")
