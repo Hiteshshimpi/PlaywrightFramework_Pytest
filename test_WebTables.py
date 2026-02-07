@@ -20,8 +20,7 @@ def test_webTables(page:Page):
                 break
         riceRow = dealsPage.locator("tr").filter(has_text="Rice")
         priceVal = riceRow.locator("td").nth(colVal).text_content()
-        assert priceVal ==37
-
+        assert priceVal =='37'
 #mouseHover
 
 def test_mouseHover(page:Page):
