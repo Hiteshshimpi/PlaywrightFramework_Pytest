@@ -15,6 +15,7 @@ class ApiUtils:
 
     def createOrder(self,playwright:Playwright):
         # request.newContext() creates a context for API
+        tokenFromApi = self.generateToken(playwright)
         request = playwright.request.new_context(base_url="https://rahulshettyacademy.com/")
         response =request.post("api/ecom/order/create-order",
                      data=orderPayload,
@@ -26,7 +27,6 @@ class ApiUtils:
 
 
     def generateToken(self,playwright:Playwright):
-        tokenFromApi=self.generateToken(playwright)
         requests = playwright.request.new_context(base_url="https://rahulshettyacademy.com/")
         response=requests.post("api/ecom/auth/login",
                       data={"userEmail":"hiteshshi@gmail.com",
@@ -37,3 +37,12 @@ class ApiUtils:
         print(response.json())
         responseBody = response.json()
         return responseBody["token"]
+
+    def getOrder(self,playwright:Playwright):
+        tokenFromApi=self.generateToken(playwright)
+        requests = playwright.request.new_context(base_url="https://rahulshettyacademy.com/")
+        requests = requests.post("api/ecom/order/get-orders-details",
+                                 data ={"id":"69874633dc40b48f12c4c59b"},
+                                headers = {"Content-Type": "application/json",
+                                            "Authorization": token}
+                                 )
