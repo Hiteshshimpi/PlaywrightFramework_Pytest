@@ -5,12 +5,13 @@ from playwright.sync_api import Playwright, expect
 from pytest_playwright.pytest_playwright import browser
 
 from apiBase import ApiUtils
+from pageObjects.dashboard import DashboardPage
+from pageObjects.login import LoginPage
 
 #json file -- > utils --> access in test
 with open('data/credentails.json') as json_file:
     json_data = json.load(json_file)
     userCredentialsList = json_data['user_Credentials']
-    print(userCredentialsList[0])
 
 
 @pytest.mark.parametrize('usercred',userCredentialsList)
@@ -26,22 +27,21 @@ def test_e2e_web_api(playwright:Playwright,usercred):
     print(orderId)
 
     # login to verify the order=
-    page.goto("https://rahulshettyacademy.com/client/#/auth/login")
-    page.get_by_placeholder("email@example.com").fill(usercred['userEmail'])
-    page.get_by_placeholder("enter your passsword").fill(usercred['userPassword'])
-    page.locator("#login").click()
-    page.wait_for_timeout(2000)
+    userName =usercred["userEmail"]
+    userPassword = usercred["userPassword"]
+    #create object for login class
+    loginPage =LoginPage(page)
+    loginPage.navigate_to_login_page()
+    dashboardPage = loginPage.login(userName,userPassword)
 
     #goit to order history page and check it the order id present or not
-    page.locator("//*[contains(@class,'btn-custom')]//i[contains(@class,'fa-handshake-o')]").click()
-    page.wait_for_timeout(1000)
+    #dashboardPage = DashboardPage(page) skipping this as this is handled in login method
+    orderHistoryPage = dashboardPage.selectOrderNavLink()
 
     # now check if the order is present or not
-    orderIdColum = page.locator("//tbody//tr").filter(has_text=orderId)
-    orderIdColum.get_by_role("button",name="View").click()
-    page.wait_for_timeout(1000)
-    print(f"Order id for new order is : {orderIdColum}")
-    expect(page.locator("p").filter(has_text="Thank you for Shopping With Us")).to_be_visible()
+    orderDetailsPage = orderHistoryPage.selectOrder(orderId)
+    orderDetailsPage.verifyMessage()
+
 
 
 
