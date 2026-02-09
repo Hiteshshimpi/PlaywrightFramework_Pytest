@@ -1,10 +1,20 @@
+import json
+
+import pytest
 from playwright.sync_api import Playwright, expect
 from pytest_playwright.pytest_playwright import browser
 
 from apiBase import ApiUtils
 
+#json file -- > utils --> access in test
+with open('data/credentails.json') as json_file:
+    json_data = json.load(json_file)
+    userCredentialsList = json_data['user_Credentials']
+    print(userCredentialsList[0])
 
-def test_e2e_web_api(playwright:Playwright):
+
+@pytest.mark.parametrize('usercred',userCredentialsList)
+def test_e2e_web_api(playwright:Playwright,usercred):
     browser=playwright.chromium.launch(headless=False)
     context =browser.new_context()
     page =context.new_page()
@@ -17,8 +27,8 @@ def test_e2e_web_api(playwright:Playwright):
 
     # login to verify the order=
     page.goto("https://rahulshettyacademy.com/client/#/auth/login")
-    page.get_by_placeholder("email@example.com").fill("hiteshshi@gmail.com")
-    page.get_by_placeholder("enter your passsword").fill("LearnApi@123")
+    page.get_by_placeholder("email@example.com").fill(usercred['userEmail'])
+    page.get_by_placeholder("enter your passsword").fill(usercred['userPassword'])
     page.locator("#login").click()
     page.wait_for_timeout(2000)
 
