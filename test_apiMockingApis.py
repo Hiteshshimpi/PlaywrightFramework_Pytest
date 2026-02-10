@@ -1,3 +1,4 @@
+import pytest
 from playwright.sync_api import Page, Playwright
 
 fakePayloadOrderResponse = {"data":[],"message":"No Orders"}
@@ -28,7 +29,6 @@ def test_Network1(page:Page):
     page.wait_for_timeout(1000)
     noOrderMessage =page.locator(".mt-4").text_content()
     print(noOrderMessage)
-
 
 def  test_Network2(page:Page):
     # login to verify the order=

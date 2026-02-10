@@ -1,6 +1,6 @@
 import pytest
 from playwright.sync_api import Page
-
+@pytest.mark.smoke
 def test_ChildWindowHandle(page:Page):
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
         #building a closure  expect_popup  and take that info new object .. this is for popup new window
