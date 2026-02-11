@@ -49,4 +49,4 @@ def test_e2e_web_api(playwright:Playwright, browserInstance, usercred,):
 #-n is count for parallel execution
 #-m smoke it for annotation execution
 # --tracing on is for ss and logs
-# --html=report.html is for hmtl report
+# --html=report.html is for hmtl reportpwd
